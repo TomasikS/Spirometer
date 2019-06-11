@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:enabled="true"
+        android:state_enabled="true"
+        android:color="@android:color/holo_red_dark"
+        android:title="@string/title_home" />
+
+    <item
+        android:enabled="true"
+        android:id="@+id/navigation_dashboard"
+        android:icon="@drawable/ic_history"
+        android:title="History"
+        android:state_enabled="true"
+        android:color="@android:color/holo_red_dark" />
+
+    <item
+        android:enabled="true"
+        android:state_enabled="true"
+        android:id="@+id/navigation_notifications"
+        android:icon="@drawable/ic_graf"
+        android:color="@android:color/holo_red_dark"
+        android:title="Average" />
+
+</menu>
