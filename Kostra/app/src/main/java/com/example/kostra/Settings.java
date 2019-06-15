@@ -7,11 +7,14 @@ import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.Toolbar;
@@ -57,9 +60,20 @@ public class Settings extends AppCompatActivity {
 
                 photo.setImageBitmap(bitmap);
 
-                DbHandler dbHandler = new DbHandler(Settings.this);
+//
 
-                dbHandler.addEntry(bitmap);
+//                DbHandler dbHandler = new DbHandler(Settings.this);
+//
+//                photo.invalidate();
+//                BitmapDrawable drawable = (BitmapDrawable) photo.getDrawable();
+//
+//
+//                dbHandler.insertBitmap(drawable.getBitmap());
+//                Toast.makeText(getBaseContext(), "bitmap saved", Toast.LENGTH_SHORT).show();
+//
+//
+//                Intent intentDetail = new Intent(Settings.this, DetailsActivity.class);
+//                startActivity(intentDetail);
 
 
             } catch (IOException e) {
@@ -104,12 +118,12 @@ public class Settings extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent data;
-                // String imageUrl = "https://4.imimg.com/data4/GK/NP/MY-1941908/plain-button-500x500.jpg";
-                // loadImageWithGlide(imageUrl);
                 Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
                 chooseFile.setType("*/*");
                 chooseFile = Intent.createChooser(chooseFile, "Choose a file");
                 startActivityForResult(chooseFile, PICKFILE_RESULT_CODE);
+                //Intent intentMain = new Intent(Settings.this, Settings.class);
+                //startActivity(intentMain);
 
             }
         });
@@ -147,9 +161,14 @@ public class Settings extends AppCompatActivity {
                 searchBox.setBackgroundResource(ram);
                 llinsert.addView(searchBox);
                 searchBox.setTag(1);
-                searchBox.setText(textView.getText());
+                // searchBox.setText(textView.getText());
 
-                /// Toast.makeText(getBaseContext(), textView.getText(), Toast.LENGTH_SHORT).show();
+//                if (textView.getText().length() > 0) {
+//                    textView.setText(textView.getText());
+//                    searchBox.setText(searchBox.getText());
+//
+//                }
+                // Toast.makeText(getBaseContext(), searchBox.getText(), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -236,7 +255,7 @@ public class Settings extends AppCompatActivity {
                 searchBox.setMaxLines(5);
                 llinsert5.addView(searchBox);
                 searchBox.setTag(5);
-
+                if (textViewNote.getText().length() > 0) searchBox.setText(" ");
             }
         });
 
@@ -252,7 +271,6 @@ public class Settings extends AppCompatActivity {
                 EditText etFirstname = (EditText) llinsert1.findViewWithTag(2);
                 EditText etLastname = (EditText) llinsert2.findViewWithTag(3);
                 EditText etDiagnose = (EditText) llinsert4.findViewWithTag(4);
-                EditText etNote = (EditText) llinsert5.findViewWithTag(5);
 
 
                 textView.setText(" ");
@@ -262,26 +280,58 @@ public class Settings extends AppCompatActivity {
                 textViewNote.setText(" ");
 
 
-//                if (llinsert.findViewWithTag(1) != null) {
-//                    etID.setText(" ");
+                if (llinsert.findViewWithTag(1) != null) {
+                    etID.setText(etID.getText());
+                    textView.setText("    ");
+
+                }
+
+
+                if (llinsert1.findViewWithTag(2) != null) {
+                    etFirstname.setText(etFirstname.getText());
+                    meno.setText("      ");
+
+                }
+                if (llinsert2.findViewWithTag(3) != null) {
+                    etLastname.setText(etLastname.getText());
+                    textViewLName.setText("     ");
+                }
+                if (llinsert4.findViewWithTag(4) != null) {
+                    etDiagnose.setText(etDiagnose.getText());
+                    textViewDiagnose.setText("      ");
+                }
 //
 //
-//                    // Toast.makeText(getBaseContext(), etID.getText(), Toast.LENGTH_SHORT).show();
-//                }
+
 //
 //
-//                if (llinsert1.findViewWithTag(2) != null) {
-//                    etFirstname.setText(" ");
-//                }
-//                if (llinsert2.findViewWithTag(3) != null) {
-//                    etLastname.setText(" ");
-//                }
-//                if (llinsert4.findViewWithTag(4) != null) {
-//                    etDiagnose.setText(" ");
-//                }
-//                if (llinsert5.findViewWithTag(5) != null) {
-//                    etNote.setText(" ");
-//                }
+                if (textViewNote.getText().toString().length() < 2) {
+
+                    textViewNote.setVisibility(View.GONE);
+
+                    View view = inflater.inflate(R.layout.textnote, null);
+                    EditText searchBox = (EditText) view.findViewById(R.id.textnote);
+                    searchBox.setBackgroundResource(ram);
+                    searchBox.setScroller(new Scroller(getApplicationContext()));
+                    searchBox.setVerticalScrollBarEnabled(true);
+                    searchBox.setMaxLines(5);
+                    llinsert5.addView(searchBox);
+                    searchBox.setTag(5);
+                    searchBox.setText(" ");
+                    ///    Toast.makeText(getBaseContext(), searchBox.getText(), Toast.LENGTH_SHORT).show();
+                }
+
+
+                EditText etNote = (EditText) llinsert5.findViewWithTag(5);
+
+
+                if (llinsert5.findViewWithTag(5) != null) {
+
+                    etNote.setText(etNote.getText());
+
+
+                }
+
 
                 if (textView.getText().toString().length() == 1) {
                     Toast.makeText(getApplicationContext(), "Wrong input ID", Toast.LENGTH_SHORT).show();
@@ -303,46 +353,79 @@ public class Settings extends AppCompatActivity {
                 if (textViewDiagnose.getText().toString().length() == 1) {
                     Toast.makeText(getApplicationContext(), "Wrong input diagnose", Toast.LENGTH_SHORT).show();
 
-                }
+
+//                    if (hasImage(photo) == false)
+//                        Toast.makeText(getApplicationContext(), "Missing photo", Toast.LENGTH_SHORT).show();
 
 
-//                if (textViewNote.getText().toString().length() == 1) {
-//                    Toast.makeText(getApplicationContext(), "Wrong input", Toast.LENGTH_SHORT).show();
-
-                //  }
-
-                if ((llinsert.findViewWithTag(1) != null) &&
-                        (llinsert1.findViewWithTag(2) != null) &&
-                        (llinsert2.findViewWithTag(3) != null) &&
-                        (llinsert4.findViewWithTag(4) != null) &&
-                        (llinsert5.findViewWithTag(5) != null) &&
+                    // DbHandler dbHandler = new DbHandler(Settings.this);
+                    //    dbHandler.deleteAll();
+                    // Toast.makeText(getApplicationContext(), "Data deleted", Toast.LENGTH_SHORT).show();
 
 
-                        (etID.getText().length() > 1) &&
+                } else if (((etID.getText().length() > 0) &&
                         (etFirstname.getText().length() > 1) &&
                         (etLastname.getText().length() > 1) &&
                         (etDiagnose.getText().length() > 1) &&
-                        (etNote.getText().length() > -1)) {
+                        (etNote.getText().length() > -1))) {
 
 
-                    String pom_ID = etID.getText().toString().substring(1, 3);
-                    int ID = Integer.parseInt(pom_ID);
-                    String firstname = etFirstname.getText().toString();
-                    String lastname = etLastname.getText().toString();
-                    String diagnose = etDiagnose.getText().toString();
-                    String note = "  ";
-                    etID.setText(ID);
-                    etFirstname.setText(firstname);
-                    etLastname.setText(lastname);
-                    etDiagnose.setText(diagnose);
-                    etNote.setText(note);
+                    Toast.makeText(getBaseContext(), "Saving to db", Toast.LENGTH_SHORT).show();
+
+
+//                    final ImageView photo = findViewById(R.id.imageView);
+//                    photo.invalidate();
+//                    BitmapDrawable drawable = (BitmapDrawable) photo.getDrawable();
+//
+//                    DbHandler dbHandler = new DbHandler(Settings.this);
+//                    dbHandler.insertBitmap(drawable.getBitmap());
 
 
                     DbHandler dbHandler = new DbHandler(Settings.this);
-                    dbHandler.insertUserDetails(ID, firstname, lastname, diagnose, note);
+                    ;
+                    Toast.makeText(getBaseContext(), "data deleted", Toast.LENGTH_SHORT).show();
+
+
+                    Toast.makeText(getBaseContext(), "bitmap saved", Toast.LENGTH_SHORT).show();
+
+
+                    String pom_ID = etID.getText().toString();
+                    String ID_NEW = pom_ID.replace(" ", "");
+
+                    int ID = Integer.parseInt(ID_NEW);
+
+
+                    String firstname = etFirstname.getText().toString();
+                    String lastname = etLastname.getText().toString();
+                    String diagnose = etDiagnose.getText().toString();
+                    String note = etNote.getText().toString();
+
+//                    Toast.makeText(getBaseContext(), firstname, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getBaseContext(), lastname, Toast.LENGTH_SHORT).show();
+
+                    // Toast.makeText(getBaseContext(), String.valueOf(ID_NEW), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getBaseContext(), diagnose, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getBaseContext(), note, Toast.LENGTH_SHORT).show();
+
+                    //
+                    //dbHandler.insertUserDetails(ID, firstname, lastname, diagnose, note);
+//                    Intent intent = new Intent(Settings.this, DetailsActivity.class);
+//                    startActivity(intent);
+
+                    dbHandler.deleteAll();
+
+                    SaveBitmap();
+                    SaveData(ID, firstname, lastname, diagnose, note);
+                    //Toast.makeText(getApplicationContext(), "Details deleted Successfully", Toast.LENGTH_SHORT).show();
+                    //    dbHandler.insertUserDetails(ID, firstname, lastname, diagnose, note);
+
+
                     Intent intent = new Intent(Settings.this, DetailsActivity.class);
                     startActivity(intent);
-                    Toast.makeText(getApplicationContext(), "Details Inserted Successfully", Toast.LENGTH_SHORT).show();
+
+                    //Toast.makeText(getApplicationContext(), "Details Inserted Successfully", Toast.LENGTH_SHORT).show();
+
+
                 } else {
 
                     Toast.makeText(getApplicationContext(), "error value", Toast.LENGTH_SHORT).show();
@@ -350,11 +433,47 @@ public class Settings extends AppCompatActivity {
                 }
 
             }
+
         });
 
 
     }
 
+    public void SaveBitmap() {
+        final ImageView photo = findViewById(R.id.imageView);
+        photo.invalidate();
+        BitmapDrawable drawable = (BitmapDrawable) photo.getDrawable();
+
+        DbHandler dbHandler = new DbHandler(Settings.this);
+        dbHandler.insertBitmap(drawable.getBitmap());
+        Toast.makeText(getBaseContext(), "bitmap saved", Toast.LENGTH_SHORT).show();
+
+
+    }
+
+
+    public void SaveData(int ID, String firstname, String lastname, String diagnose, String note) {
+
+        DbHandler dbHandler = new DbHandler(Settings.this);
+        dbHandler.insertUserDetails(ID, firstname, lastname, diagnose, note);
+        Intent intent = new Intent(Settings.this, DetailsActivity.class);
+        startActivity(intent);
+        Toast.makeText(getApplicationContext(), "Details Inserted Successfully", Toast.LENGTH_SHORT).show();
+
+
+    }
+
+
+    private boolean hasImage(ImageView photo) {
+        Drawable drawable = photo.getDrawable();
+        boolean hasImage = (drawable != null);
+
+        if (hasImage && (drawable instanceof BitmapDrawable)) {
+            hasImage = ((BitmapDrawable) drawable).getBitmap() != null;
+        }
+
+        return hasImage;
+    }
 
 }
 
