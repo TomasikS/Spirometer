@@ -34,12 +34,33 @@ public class history extends Fragment {
             LinearLayout mainLayout = view.findViewById(R.id.ll2);
             LinearLayout linearLayout = new LinearLayout(getContext());
             linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+
+            LinearLayout linearLayout2 = new LinearLayout(getContext());
+            linearLayout.setOrientation(LinearLayout.VERTICAL);
+
+            LinearLayout linearLayoutHorizontal = new LinearLayout(getContext());
+            linearLayoutHorizontal.setOrientation(LinearLayout.HORIZONTAL);
+
+            LinearLayout linearLayoutHorizontal2 = new LinearLayout(getContext());
+            linearLayoutHorizontal2.setOrientation(LinearLayout.HORIZONTAL);
+
+
             LinearLayout linearLayoutVertical = new LinearLayout(getContext());
             linearLayoutVertical.setOrientation(LinearLayout.VERTICAL);
 
 
+            LinearLayout linearLayoutVertical2 = new LinearLayout(getContext());
+            linearLayoutVertical.setOrientation(LinearLayout.VERTICAL);
+
+            TextView date = new TextView(getContext());
+            date.setText("date");
+
+
             TextView newText = new TextView(getContext());
             newText.setText("Average speed");
+
+
             TextView editText = new EditText(getContext());
             TextView speed = new EditText(getContext());
 
@@ -58,10 +79,21 @@ public class history extends Fragment {
 
             editText.setLayoutParams(
                     new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT
-                            , LinearLayout.LayoutParams.WRAP_CONTENT));
+                            , LinearLayout.LayoutParams.MATCH_PARENT));
             newText.setLayoutParams(
                     new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT
+                            , LinearLayout.LayoutParams.MATCH_PARENT));
+
+
+            date.setLayoutParams(
+                    new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT
                             , LinearLayout.LayoutParams.WRAP_CONTENT));
+
+
+            speed.setLayoutParams(
+                    new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT
+                            , LinearLayout.LayoutParams.MATCH_PARENT));
+
 
             imageView.setLayoutParams(new LinearLayout.LayoutParams(250, 250));
 
@@ -69,16 +101,27 @@ public class history extends Fragment {
 
 
             linearLayout.addView(imageView);
+            linearLayout.addView(linearLayout2);
+            linearLayout2.setOrientation(LinearLayout.VERTICAL);
+            linearLayout2.addView(linearLayoutHorizontal);
+            linearLayout2.addView(linearLayoutHorizontal2);
+            //  linearLayoutHorizontal.setOrientation(LinearLayout.VERTICAL);
+
+            linearLayoutHorizontal.addView(date);
+            linearLayoutHorizontal.addView(editText);
+
+            //  linearLayoutHorizontal2.setOrientation(LinearLayout.VERTICAL);
+
+            linearLayoutHorizontal2.addView(newText);
+            linearLayoutHorizontal2.addView(speed);
 
 
-            linearLayoutVertical.addView(editText);
-
-
-            linearLayoutVertical.addView(newText);
-            linearLayoutVertical.addView(speed);
-            linearLayout.addView(linearLayoutVertical);
             mainLayout.addView(linearLayout);
+
+
         }
+
+
         return view;
 
     }

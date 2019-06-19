@@ -7,17 +7,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class DetailsActivity extends AppCompatActivity {
     Intent intent;
+    int id;
+    String name;
+    String lastname;
+    String diagnose;
+    String note;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +42,6 @@ public class DetailsActivity extends AppCompatActivity {
         TextView textViewLastname = findViewById(R.id.lastname);
         TextView textViewDiagnose = findViewById(R.id.diagnose);
         TextView textViewNote = findViewById(R.id.note);
-
-
-        int id;
-        String name;
-        String lastname;
-        String diagnose;
-        String note;
 
 
         id = db.GetUserID();

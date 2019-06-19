@@ -75,6 +75,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:text=" "
+                android:background="@drawable/border"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp" />
 
@@ -169,16 +170,16 @@
         <!--</LinearLayout>-->
 
 
-        <View
-            android:id="@+id/Line"
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@color/colorPrimary">
+        <!--<View-->
+        <!--android:id="@+id/Line"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:layout_marginBottom="10dp"-->
+        <!--android:background="@color/colorPrimary">-->
 
 
-        </View>
+        <!--</View>-->
 
         <LinearLayout
             android:id="@+id/dynamic0"
@@ -209,21 +210,22 @@
                 android:layout_marginBottom="10dp"
                 android:layout_weight="1"
                 android:ems="10"
+                android:background="@drawable/border"
                 android:text=" " />
 
         </LinearLayout>
 
 
-        <View
-            android:id="@+id/LineN"
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@color/colorPrimary">
+        <!--<View-->
+        <!--android:id="@+id/LineN"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:layout_marginBottom="10dp"-->
+        <!--android:background="@color/colorPrimary">-->
 
 
-        </View>
+        <!--</View>-->
 
 
         <LinearLayout
@@ -255,20 +257,21 @@
                 android:layout_marginBottom="10dp"
                 android:layout_weight="1"
                 android:ems="10"
+                android:background="@drawable/border"
                 android:text=" " />
 
         </LinearLayout>
 
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:id="@+id/Line3"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@color/colorPrimary">
+        <!--<View-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:id="@+id/Line3"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:layout_marginBottom="10dp"-->
+        <!--android:background="@color/colorPrimary">-->
 
 
-        </View>
+        <!--</View>-->
 
         <LinearLayout
             android:id="@+id/dynamic4"
@@ -299,20 +302,21 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:text=" "
+                android:background="@drawable/border"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp" />
 
         </LinearLayout>
 
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:id="@+id/Line5"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@color/colorPrimary">
+        <!--<View-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:id="@+id/Line5"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:layout_marginBottom="10dp"-->
+        <!--android:background="@color/colorPrimary">-->
 
-        </View>
+        <!--</View>-->
 
 
         <LinearLayout
@@ -337,42 +341,44 @@
         </LinearLayout>
 
 
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:id="@+id/Line6"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@color/colorPrimary">
+        <!--<View-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:id="@+id/Line6"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:layout_marginBottom="10dp"-->
+        <!--android:background="@color/colorPrimary">-->
 
-        </View>
+        <!--</View>-->
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@color/ram">
 
             <TextView
                 android:id="@+id/editTextNote"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="366dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="10dp"
                 android:layout_weight="1"
+                android:background="@drawable/border"
                 android:ems="10"
                 android:text="  " />
 
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:id="@+id/Line7"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@color/colorPrimary">
+            <!--<View-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:id="@+id/Line7"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:layout_marginBottom="10dp"-->
+            <!--android:background="@color/colorPrimary">-->
 
-            </View>
+            <!--</View>-->
 
         </LinearLayout>
 

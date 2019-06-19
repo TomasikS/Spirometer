@@ -1,6 +1,5 @@
 package com.example.kostra;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,21 +13,21 @@ import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 
 public class DbHandler extends SQLiteOpenHelper {
     private static final int DB_VERSION = 10;
     private static final String DB_NAME = "meranie";
     private static final String TABLE_Users = "UserInformation";
-    private static final String KEY_ID = "id";
-    private static final String KEY_FIRSTNAME = "firstname";
-    private static final String KEY_LASTNAME = "lastname";
-    private static final String KEY_DIAGNOSE = "diagnose";
-    private static final String KEY_NOTE = "note";
+    private static final String TABLE_History = "History";
 
-    private static final String KEY_IMAGE = "img";
+
+//    private static final String KEY_ID = "id";
+//    private static final String KEY_FIRSTNAME = "firstname";
+//    private static final String KEY_LASTNAME = "lastname";
+//    private static final String KEY_DIAGNOSE = "diagnose";
+//    private static final String KEY_NOTE = "note";
+//
+//    private static final String KEY_IMAGE = "img";
     ///  public static final String CREATE_TABLE2 = "CREATE TABLE IF NOT EXISTS "+ TABLE_NAME+ "(id INTEGER PRIMARY KEY AUTOINCREMENT, img BLOB NOT NULL, description TEXT NULL)";
 
 
@@ -41,14 +40,13 @@ public class DbHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
 
-//        String CREATE_TABLE = "CREATE TABLE " + TABLE_Users + "("
-//                + KEY_ID + " INTEGER PRIMARY KEY," + KEY_LASTNAME + " TEXT," + KEY_FIRSTNAME + " TEXT,"
-//                + KEY_DIAGNOSE + " TEXT," + KEY_NOTE + "TEXT," + img BLOB + ")";
-
-
-        // db.execSQL(CREATE_TABLE);
         db.execSQL(
                 "create table " + TABLE_Users + "(id INTEGER PRIMARY KEY, firstname TEXT, lastname TEXT, diagnose TEXT, note TEXT,img BLOB) "
+        );
+
+
+        db.execSQL(
+                "create table " + TABLE_History + "(id INTEGER PRIMARY KEY, date TEXT, date2 TEXT, volume INTEGER, speed INTEGER ) "
         );
 
     }
@@ -57,7 +55,6 @@ public class DbHandler extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE UserInformation");
 
-        // Create tables again
         onCreate(db);
     }
 
@@ -83,8 +80,6 @@ public class DbHandler extends SQLiteOpenHelper {
         statement.bindString(4, diagnose);
         statement.bindString(5, note);
         long rowId = statement.executeInsert();
-//        db.setTransactionSuccessful();
-        //      db.endTransaction();
         db.close();
     }
 
@@ -119,8 +114,6 @@ public class DbHandler extends SQLiteOpenHelper {
         String name = "";
 
         while (cursor.moveToNext()) {
-//            HashMap<String, String> user = new HashMap<>();
-//            user.put("id", cursor.getLong(cursor.getColumnIndex("id")));
             name = cursor.getString(cursor.getColumnIndex("firstname"));
 
         }
@@ -136,8 +129,6 @@ public class DbHandler extends SQLiteOpenHelper {
         String name = "";
 
         while (cursor.moveToNext()) {
-//            HashMap<String, String> user = new HashMap<>();
-//            user.put("id", cursor.getLong(cursor.getColumnIndex("id")));
             name = cursor.getString(cursor.getColumnIndex("lastname"));
 
         }
@@ -152,8 +143,6 @@ public class DbHandler extends SQLiteOpenHelper {
         String name = "";
 
         while (cursor.moveToNext()) {
-//            HashMap<String, String> user = new HashMap<>();
-//            user.put("id", cursor.getLong(cursor.getColumnIndex("id")));
             name = cursor.getString(cursor.getColumnIndex("diagnose"));
 
         }
@@ -169,8 +158,6 @@ public class DbHandler extends SQLiteOpenHelper {
         String name = "";
 
         while (cursor.moveToNext()) {
-//            HashMap<String, String> user = new HashMap<>();
-//            user.put("id", cursor.getLong(cursor.getColumnIndex("id")));
             name = cursor.getString(cursor.getColumnIndex("note"));
 
         }
@@ -180,23 +167,14 @@ public class DbHandler extends SQLiteOpenHelper {
 
     public void insertBitmap(Bitmap bm) {
 
-        // Convert the image into byte array
+
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         bm.compress(Bitmap.CompressFormat.PNG, 100, out);
         byte[] buffer = out.toByteArray();
-        // Open the database for writing
         SQLiteDatabase db = this.getWritableDatabase();
-        // Start the transaction.
         db.beginTransaction();
-        // ContentValues hodnota;
-        //hodnota = new ContentValues();
-        try {
 
-            /// hodnota.put("img", buffer);
-            // values.put("description", "Image description");
-            // Insert Row
-            //  long i = db.insert(TABLE_Users, null, values);
-            //  final String Insert_Data = "INSERT INTO UserInformation (img) VALUES(hodnota)";
+        try {
 
             String sql = "INSERT INTO UserInformation (img) VALUES(?)";
             SQLiteStatement insertStmt = db.compileStatement(sql);
@@ -206,7 +184,6 @@ public class DbHandler extends SQLiteOpenHelper {
             db.execSQL(sql);
 
             Log.i("Insert", "text");
-            // Insert into database successfully.
             db.setTransactionSuccessful();
 
         } catch (SQLiteException e) {
@@ -214,16 +191,14 @@ public class DbHandler extends SQLiteOpenHelper {
 
         } finally {
             db.endTransaction();
-            // End the transaction.
             db.close();
-            // Close database
         }
     }
 
     public Bitmap getBitmap() {
         SQLiteDatabase db = this.getWritableDatabase();
         String qu = "select img  from UserInformation";
-        ;
+
         Cursor cur = db.rawQuery(qu, null);
 
         if (cur.moveToFirst()) {
@@ -237,6 +212,25 @@ public class DbHandler extends SQLiteOpenHelper {
         db.close();
         return null;
     }
+
+
+    public void inserToHistory(int id, String date, String date2, int volume, int speed) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String sql = "INSERT INTO  History  (id,date,date2, volume, speed) VALUES (?, ?, ?,?,?)";
+        SQLiteStatement statement = db.compileStatement(sql);
+        statement.bindLong(1, id);
+        statement.bindString(2, date);
+        statement.bindString(3, date2);
+        statement.bindLong(4, volume);
+        statement.bindLong(5, speed);
+        long rowId = statement.executeInsert();
+        db.close();
+
+
+    }
+
 }
 
 

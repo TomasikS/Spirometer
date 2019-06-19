@@ -46,6 +46,7 @@ public class Settings extends AppCompatActivity {
     public static final int PICKFILE_RESULT_CODE = 1;
     private int PICK_IMAGE_REQUEST = 1;
 
+    Boolean IsBitmap = false;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -105,6 +106,7 @@ public class Settings extends AppCompatActivity {
         final LinearLayout llinsert5 = lll.findViewById(R.id.dynamic5);
         final LinearLayout container = llm.findViewById(R.id.toolbarcontainer);
 
+
         getSupportActionBar().hide();
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(Color.BLACK);
@@ -124,7 +126,7 @@ public class Settings extends AppCompatActivity {
                 startActivityForResult(chooseFile, PICKFILE_RESULT_CODE);
                 //Intent intentMain = new Intent(Settings.this, Settings.class);
                 //startActivity(intentMain);
-
+                IsBitmap = true;
             }
         });
 
@@ -354,6 +356,14 @@ public class Settings extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Wrong input diagnose", Toast.LENGTH_SHORT).show();
 
 
+                    if ((IsBitmap == false)) {
+//
+//
+
+                        Toast.makeText(getApplicationContext(), "empty image ", Toast.LENGTH_SHORT).show();
+                    }
+
+
 //                    if (hasImage(photo) == false)
 //                        Toast.makeText(getApplicationContext(), "Missing photo", Toast.LENGTH_SHORT).show();
 
@@ -367,7 +377,12 @@ public class Settings extends AppCompatActivity {
                         (etFirstname.getText().length() > 1) &&
                         (etLastname.getText().length() > 1) &&
                         (etDiagnose.getText().length() > 1) &&
-                        (etNote.getText().length() > -1))) {
+                        (CheckString(etID.getText().toString())) &&
+                        (isString(etFirstname.getText().toString())) &&
+                        (isString(etLastname.getText().toString())) &&
+                        (isString(etDiagnose.getText().toString())) &&
+                        (etNote.getText().length() > -1) &&
+                        (IsBitmap == true))) {
 
 
                     Toast.makeText(getBaseContext(), "Saving to db", Toast.LENGTH_SHORT).show();
@@ -382,7 +397,7 @@ public class Settings extends AppCompatActivity {
 
 
                     DbHandler dbHandler = new DbHandler(Settings.this);
-                    ;
+
                     Toast.makeText(getBaseContext(), "data deleted", Toast.LENGTH_SHORT).show();
 
 
@@ -464,15 +479,21 @@ public class Settings extends AppCompatActivity {
     }
 
 
-    private boolean hasImage(ImageView photo) {
-        Drawable drawable = photo.getDrawable();
-        boolean hasImage = (drawable != null);
-
-        if (hasImage && (drawable instanceof BitmapDrawable)) {
-            hasImage = ((BitmapDrawable) drawable).getBitmap() != null;
+    public static boolean CheckString(String str) {
+        for (char c : str.toCharArray()) {
+            if (!Character.isDigit(c))
+                return false;
         }
+        return true;
+    }
 
-        return hasImage;
+
+    boolean isString(String str) {
+        for (char c : str.toCharArray()) {
+            if ((Character.isUpperCase(c)) || (Character.isLowerCase(c))) return true;
+
+        }
+        return false;
     }
 
 }
