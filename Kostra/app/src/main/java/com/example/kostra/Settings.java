@@ -7,8 +7,11 @@ import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RectShape;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -105,6 +108,7 @@ public class Settings extends AppCompatActivity {
         final LinearLayout llinsert4 = lll.findViewById(R.id.dynamic4);
         final LinearLayout llinsert5 = lll.findViewById(R.id.dynamic5);
         final LinearLayout container = llm.findViewById(R.id.toolbarcontainer);
+        DbHandler dbHandler = new DbHandler(Settings.this);
 
 
         getSupportActionBar().hide();
@@ -114,6 +118,17 @@ public class Settings extends AppCompatActivity {
         toolbar.setTitle("Settings");
 
         container.addView(toolbar);
+
+        dbHandler.deleteAll();
+
+        int id = dbHandler.GetUserID();
+        String firstname = dbHandler.GetUserName();
+        String lastname = dbHandler.GetUserLastname();
+        String diagnose = dbHandler.GetUserDiagnose();
+        String note = dbHandler.GetUserNote();
+
+
+        Toast.makeText(getBaseContext(), firstname, Toast.LENGTH_SHORT).show();
 
 
         photo.setOnClickListener(new View.OnClickListener() {
@@ -144,10 +159,16 @@ public class Settings extends AppCompatActivity {
         });
 
 
-        final View line = findViewById(R.id.Line);
-
-
+        final TextView IDDescribe = findViewById(R.id.textView);
         final TextView textView = findViewById(R.id.textID);
+
+
+        ShapeDrawable sd2 = new ShapeDrawable();
+        sd2.getPaint().setColor(Color.RED);
+        sd2.getPaint().setStrokeWidth(10f);
+        sd2.setShape(new RectShape());
+        sd2.getPaint().setStyle(Paint.Style.STROKE);
+        textView.setBackground(sd2);
 
 
         textView.setOnClickListener(new View.OnClickListener() {
@@ -161,8 +182,13 @@ public class Settings extends AppCompatActivity {
                 view = inflater.inflate(R.layout.search, null);
                 EditText searchBox = (EditText) view.findViewById(R.id.textid);
                 searchBox.setBackgroundResource(ram);
+                llinsert.removeView(textView);
                 llinsert.addView(searchBox);
                 searchBox.setTag(1);
+
+                textView.setBackground(null);
+                textView.setText("ID");
+
                 // searchBox.setText(textView.getText());
 
 //                if (textView.getText().length() > 0) {
@@ -176,7 +202,21 @@ public class Settings extends AppCompatActivity {
         });
 
 
+        final TextView menoDescribe = findViewById(R.id.textViewMeno);
+
+        menoDescribe.setVisibility(View.VISIBLE);
+
+
         final TextView meno = findViewById(R.id.textIDFirstname);
+
+        ShapeDrawable sd = new ShapeDrawable();
+        sd.getPaint().setColor(Color.RED);
+        sd.getPaint().setStrokeWidth(10f);
+        sd.setShape(new RectShape());
+        sd.getPaint().setStyle(Paint.Style.STROKE);
+
+
+        meno.setBackground(sd);
 
 
         meno.setOnClickListener(new View.OnClickListener() {
@@ -192,10 +232,12 @@ public class Settings extends AppCompatActivity {
                 view = inflater.inflate(R.layout.name, null);
                 EditText searchBox = (EditText) view.findViewById(R.id.textname);
                 searchBox.setBackgroundResource(ram);
-
+                llinsert1.removeView(meno);
                 llinsert1.addView(searchBox);
                 searchBox.setTag(2);
 
+                meno.setBackground(null);
+                menoDescribe.setText("Firstname");
             }
         });
 
@@ -260,6 +302,12 @@ public class Settings extends AppCompatActivity {
                 if (textViewNote.getText().length() > 0) searchBox.setText(" ");
             }
         });
+
+        textView.setText(String.valueOf(id));
+        meno.setText(firstname);
+        textViewLName.setText(lastname);
+        textViewDiagnose.setText(diagnose);
+        textViewNote.setText(note);
 
 
         AppCompatImageView view = findViewById(R.id.change);
@@ -364,15 +412,6 @@ public class Settings extends AppCompatActivity {
                     }
 
 
-//                    if (hasImage(photo) == false)
-//                        Toast.makeText(getApplicationContext(), "Missing photo", Toast.LENGTH_SHORT).show();
-
-
-                    // DbHandler dbHandler = new DbHandler(Settings.this);
-                    //    dbHandler.deleteAll();
-                    // Toast.makeText(getApplicationContext(), "Data deleted", Toast.LENGTH_SHORT).show();
-
-
                 } else if (((etID.getText().length() > 0) &&
                         (etFirstname.getText().length() > 1) &&
                         (etLastname.getText().length() > 1) &&
@@ -427,7 +466,6 @@ public class Settings extends AppCompatActivity {
 //                    Intent intent = new Intent(Settings.this, DetailsActivity.class);
 //                    startActivity(intent);
 
-                    dbHandler.deleteAll();
 
                     SaveBitmap();
                     SaveData(ID, firstname, lastname, diagnose, note);

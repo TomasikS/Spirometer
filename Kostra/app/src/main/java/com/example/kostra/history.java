@@ -12,10 +12,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toolbar;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class history extends Fragment {
 
@@ -24,11 +29,29 @@ public class history extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+
         super.onCreate(savedInstanceState);
         inflater = getLayoutInflater();
         View view = inflater.inflate(R.layout.activity_history, null);
 
-        for (int i = 0; i <= 20; i++) {
+
+        DbHandler db = new DbHandler(getContext());
+        List<String> dates = new ArrayList();
+        dates = db.GetDate();
+
+        List<String> times = new ArrayList();
+        times = db.GetTime();
+
+
+        List<Integer> volumeOfUser = new ArrayList();
+        volumeOfUser = db.GetVolume();
+
+
+        List<Integer> speedOfUser = new ArrayList();
+        speedOfUser = db.GetSpeed();
+
+
+        for (int i = 0; i < dates.size(); i++) {
 
 
             LinearLayout mainLayout = view.findViewById(R.id.ll2);
@@ -50,9 +73,6 @@ public class history extends Fragment {
             linearLayoutVertical.setOrientation(LinearLayout.VERTICAL);
 
 
-            LinearLayout linearLayoutVertical2 = new LinearLayout(getContext());
-            linearLayoutVertical.setOrientation(LinearLayout.VERTICAL);
-
             TextView date = new TextView(getContext());
             date.setText("date");
 
@@ -65,66 +85,83 @@ public class history extends Fragment {
             TextView speed = new EditText(getContext());
 
 
-            mainLayout.setGravity(Gravity.CENTER);
             ImageView imageView = new ImageView(getContext());
             imageView.setBackgroundColor(Color.BLACK);
 
 
-            linearLayout.setLayoutParams(
-                    new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT
-                            , LinearLayout.LayoutParams.WRAP_CONTENT));
+            imageView.setLayoutParams(new LinearLayout.LayoutParams(280, 400));
 
-            linearLayout.setPadding(40, 20, 40, 20);
+            imageView.setBackgroundResource(R.drawable.ic_graf);
+
+            linearLayout2.setOrientation(LinearLayout.HORIZONTAL);
+            mainLayout.setOrientation(LinearLayout.VERTICAL);
+            linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+
+            LinearLayout ll = new LinearLayout(getContext());
+            LinearLayout ll2 = new LinearLayout(getContext());
+            LinearLayout linearLayout3 = new LinearLayout(getContext());
+
+            linearLayout.addView(date);
+            linearLayout.addView(editText);
+
+            editText.setText(dates.get(i) + " " + times.get(i));
+
+
             linearLayout.setGravity(Gravity.CENTER);
 
-            editText.setLayoutParams(
-                    new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT
-                            , LinearLayout.LayoutParams.MATCH_PARENT));
-            newText.setLayoutParams(
-                    new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT
-                            , LinearLayout.LayoutParams.MATCH_PARENT));
+            linearLayout2.addView(newText);
+            linearLayout2.addView(speed);
+
+            speed.setText(speedOfUser.get(i).toString() + "km/h");
+            EditText volume = new EditText(getContext());
 
 
-            date.setLayoutParams(
-                    new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT
-                            , LinearLayout.LayoutParams.WRAP_CONTENT));
+            volume.setText(volumeOfUser.get(i).toString() + "l");
+            TextView volume_describe = new TextView(getContext());
+            volume_describe.setText("Average volume");
 
 
-            speed.setLayoutParams(
-                    new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT
-                            , LinearLayout.LayoutParams.MATCH_PARENT));
+            linearLayout3.addView(volume_describe);
+            linearLayout3.addView(volume);
 
 
-            imageView.setLayoutParams(new LinearLayout.LayoutParams(250, 250));
+            ll2.setOrientation(LinearLayout.VERTICAL);
 
-            imageView.setBackgroundResource(R.mipmap.ic_launcher_round);
+            ll2.addView(linearLayout);
+            ll2.addView(linearLayout2);
+            ll2.addView(linearLayout3);
 
+            ll.addView(ll2);
 
-            linearLayout.addView(imageView);
-            linearLayout.addView(linearLayout2);
-            linearLayout2.setOrientation(LinearLayout.VERTICAL);
-            linearLayout2.addView(linearLayoutHorizontal);
-            linearLayout2.addView(linearLayoutHorizontal2);
-            //  linearLayoutHorizontal.setOrientation(LinearLayout.VERTICAL);
+            GridLayout gridLayout = new GridLayout(getContext());
+            gridLayout.setAlignmentMode(GridLayout.ALIGN_BOUNDS);
+            gridLayout.setColumnCount(2);
+            gridLayout.setRowCount(1);
 
-            linearLayoutHorizontal.addView(date);
-            linearLayoutHorizontal.addView(editText);
-
-            //  linearLayoutHorizontal2.setOrientation(LinearLayout.VERTICAL);
-
-            linearLayoutHorizontal2.addView(newText);
-            linearLayoutHorizontal2.addView(speed);
+            gridLayout.addView(imageView, 0);
+            gridLayout.addView(ll, 1);
 
 
-            mainLayout.addView(linearLayout);
-
+            mainLayout.addView(gridLayout);
 
         }
-
-
+        //
+        //    db.deleteAllMeasurements();
+        //SaveMeasurement();
+//        Toast.makeText(getContext(), String.valueOf(dates.size()), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getContext(), dates.get(39), Toast.LENGTH_SHORT).show();
         return view;
 
     }
+
+    public void SaveMeasurement() {
+        DbHandler db = new DbHandler(getContext());
+        db.insertToHistory("26.4.2019", "20:00", 8, 21);
+        db.insertToHistory("21.5.2019", "10:00", 8, 225);
+        //Toast.makeText(getContext(), "data saved", Toast.LENGTH_SHORT).show();
+    }
+
 }
 
 

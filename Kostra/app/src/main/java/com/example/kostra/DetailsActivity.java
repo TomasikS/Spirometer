@@ -50,12 +50,6 @@ public class DetailsActivity extends AppCompatActivity {
         diagnose = db.GetUserDiagnose();
         note = db.GetUserNote();
 
-//
-//        Toast.makeText(getBaseContext(), name, Toast.LENGTH_SHORT).show();
-//        Toast.makeText(getBaseContext(), lastname, Toast.LENGTH_SHORT).show();
-//        Toast.makeText(getBaseContext(), diagnose, Toast.LENGTH_SHORT).show();
-//        Toast.makeText(getBaseContext(), note, Toast.LENGTH_SHORT).show();
-
 
         textViewID.setText(String.valueOf(id));
         textViewFirstname.setText(name);

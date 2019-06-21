@@ -1,5 +1,6 @@
 package com.example.kostra;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,12 +11,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
-
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class DbHandler extends SQLiteOpenHelper {
-    private static final int DB_VERSION = 10;
+    private static final int DB_VERSION = 15;
     private static final String DB_NAME = "meranie";
     private static final String TABLE_Users = "UserInformation";
     private static final String TABLE_History = "History";
@@ -46,7 +48,7 @@ public class DbHandler extends SQLiteOpenHelper {
 
 
         db.execSQL(
-                "create table " + TABLE_History + "(id INTEGER PRIMARY KEY, date TEXT, date2 TEXT, volume INTEGER, speed INTEGER ) "
+                "create table " + TABLE_History + "(id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT, date2 TEXT, volume INTEGER, speed INTEGER ) "
         );
 
     }
@@ -54,22 +56,21 @@ public class DbHandler extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE UserInformation");
+        db.execSQL(
+                "create table " + TABLE_Users + "(id INTEGER PRIMARY KEY, firstname TEXT, lastname TEXT, diagnose TEXT, note TEXT,img BLOB) "
+        );
 
-        onCreate(db);
+
+        db.execSQL("DROP TABLE History");
+        db.execSQL(
+                "create table " + TABLE_History + "(id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT, date2 TEXT, volume INTEGER, speed INTEGER ) "
+        );
+        //  onCreate(db);
     }
 
 
     void insertUserDetails(int id, String firstname, String lastname, String diagnose, String note) {
         SQLiteDatabase db = this.getWritableDatabase();
-
-
-//        ContentValues cValues = new ContentValues();
-//        cValues.put("id", id);
-//        cValues.put("firstname", firstname);
-//        cValues.put("lastname", lastname);
-//        cValues.put("diagnose", diagnose);
-//        cValues.put("note", note);
-//        db.insert(TABLE_Users, null, cValues);
 
         String sql = "INSERT INTO UserInformation (id,firstname,lastname, diagnose,note) VALUES (?, ?, ?,?,?)";
         SQLiteStatement statement = db.compileStatement(sql);
@@ -214,21 +215,92 @@ public class DbHandler extends SQLiteOpenHelper {
     }
 
 
-    public void inserToHistory(int id, String date, String date2, int volume, int speed) {
-
+    void insertToHistory(String date1, String date2, int volume, int speed) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String sql = "INSERT INTO  History  (id,date,date2, volume, speed) VALUES (?, ?, ?,?,?)";
-        SQLiteStatement statement = db.compileStatement(sql);
-        statement.bindLong(1, id);
-        statement.bindString(2, date);
-        statement.bindString(3, date2);
-        statement.bindLong(4, volume);
-        statement.bindLong(5, speed);
-        long rowId = statement.executeInsert();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("date", date1);
+        contentValues.put("date2", date2);
+        contentValues.put("volume", volume);
+        contentValues.put("speed", speed);
+
+
+        long result = db.insert(TABLE_History, null, contentValues);
         db.close();
+    }
 
 
+    public List GetDate() {
+
+        List<String> list = new ArrayList();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT   date  FROM History ";
+        Cursor cursor = db.rawQuery(query, null);
+        String j = " ";
+
+        while (cursor.moveToNext()) {
+
+            j = cursor.getString(cursor.getColumnIndex("date"));
+
+            list.add(j);
+        }
+
+        return list;
+
+    }
+
+
+    public List GetTime() {
+
+        List<String> list = new ArrayList();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT  date2 FROM History ";
+        Cursor cursor = db.rawQuery(query, null);
+        String j = " ";
+        while (cursor.moveToNext()) {
+
+            j = cursor.getString(cursor.getColumnIndex("date2"));
+            list.add(j);
+        }
+        return list;
+    }
+
+
+    public List GetVolume() {
+
+        List<Integer> list = new ArrayList();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT  volume FROM History ";
+        Cursor cursor = db.rawQuery(query, null);
+        int j = 0;
+        while (cursor.moveToNext()) {
+
+            j = (int) cursor.getLong(cursor.getColumnIndex("volume"));
+            list.add(j);
+        }
+        return list;
+    }
+
+
+    public List GetSpeed() {
+
+        List<Integer> list = new ArrayList();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT  speed FROM History ";
+        Cursor cursor = db.rawQuery(query, null);
+        int j = 0;
+        while (cursor.moveToNext()) {
+
+            j = (int) cursor.getLong(cursor.getColumnIndex("speed"));
+            list.add(j);
+        }
+        return list;
+    }
+
+    public void deleteAllMeasurements() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("delete from History WHERE id >1");
+        db.close();
     }
 
 }

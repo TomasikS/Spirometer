@@ -30,9 +30,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
+            android:layout_marginBottom="40dp"
 
-            android:layout_marginBottom="40dp">
+            android:orientation="vertical">
 
 
             <ImageView
@@ -48,36 +48,58 @@
 
         <LinearLayout
             android:id="@+id/dynamic"
-            android:background="@color/ram"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@color/ram"
             android:orientation="horizontal">
 
 
+            <!--<TextView-->
+            <!--android:id="@+id/textView"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginLeft="20dp"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:layout_marginRight="40dp"-->
+            <!--android:layout_marginBottom="10dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:text="ID" />-->
+
+            <!--<TextView-->
+            <!--android:id="@+id/textID"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginLeft="40dp"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:layout_marginRight="20dp"-->
+            <!--android:layout_marginBottom="10dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:ems="10"-->
+            <!--android:text=" " />-->
+
             <TextView
                 android:id="@+id/textView"
-                android:layout_width="wrap_content"
+                android:layout_width="111dp"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginRight="80dp"
                 android:layout_marginBottom="10dp"
                 android:layout_weight="1"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
                 android:text="ID" />
 
             <TextView
                 android:id="@+id/textID"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="50dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginRight="70dp"
                 android:layout_marginBottom="10dp"
                 android:layout_weight="1"
                 android:ems="10"
-                android:text=" "
-                android:background="@drawable/border"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp" />
+                android:text=" " />
 
         </LinearLayout>
 
@@ -183,34 +205,33 @@
 
         <LinearLayout
             android:id="@+id/dynamic0"
-            android:background="@color/ram"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@color/ram"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/textViewMeno"
-                android:layout_width="wrap_content"
+                android:layout_width="111dp"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginRight="80dp"
                 android:layout_marginBottom="10dp"
                 android:layout_weight="1"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
                 android:text="Firstname" />
 
             <TextView
                 android:id="@+id/textIDFirstname"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="50dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginRight="20dp"
+                android:layout_marginRight="70dp"
                 android:layout_marginBottom="10dp"
                 android:layout_weight="1"
                 android:ems="10"
-                android:background="@drawable/border"
                 android:text=" " />
 
         </LinearLayout>
@@ -230,35 +251,60 @@
 
         <LinearLayout
             android:id="@+id/dynamic3"
-            android:background="@color/ram"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@color/ram"
             android:orientation="horizontal">
+
+            <!--<TextView-->
+            <!--android:id="@+id/textView334"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:layout_marginBottom="10dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_marginLeft="20dp"-->
+            <!--android:layout_marginRight="20dp"-->
+            <!--android:text="Lastname" />-->
+
 
             <TextView
                 android:id="@+id/textView334"
-                android:layout_width="wrap_content"
+                android:layout_width="111dp"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginRight="80dp"
                 android:layout_marginBottom="10dp"
                 android:layout_weight="1"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
                 android:text="Lastname" />
 
             <TextView
                 android:id="@+id/editTextLName"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="50dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginRight="20dp"
+                android:layout_marginRight="70dp"
                 android:layout_marginBottom="10dp"
                 android:layout_weight="1"
                 android:ems="10"
-                android:background="@drawable/border"
                 android:text=" " />
+
+
+            <!--<TextView-->
+            <!--android:id="@+id/editTextLName"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginLeft="20dp"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:layout_marginRight="20dp"-->
+            <!--android:layout_marginBottom="10dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:ems="10"-->
+            <!--android:background="@drawable/border"-->
+            <!--android:text=" " />-->
 
         </LinearLayout>
 
@@ -275,36 +321,60 @@
 
         <LinearLayout
             android:id="@+id/dynamic4"
-            android:background="@color/ram"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@color/ram"
             android:orientation="horizontal">
+
+
+            <!--<TextView-->
+            <!--android:id="@+id/textView33"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:layout_marginBottom="10dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_marginLeft="20dp"-->
+            <!--android:layout_marginRight="20dp"-->
+            <!--android:text="Diagnose" />-->
+
+            <!--<TextView-->
+            <!--android:id="@+id/editTextDiagnose"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:layout_marginBottom="10dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:ems="10"-->
+            <!--android:text=" "-->
+            <!--android:background="@drawable/border"-->
+            <!--android:layout_marginLeft="20dp"-->
+            <!--android:layout_marginRight="20dp" />-->
 
 
             <TextView
                 android:id="@+id/textView33"
-                android:layout_width="wrap_content"
+                android:layout_width="111dp"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginRight="80dp"
                 android:layout_marginBottom="10dp"
                 android:layout_weight="1"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
                 android:text="Diagnose" />
 
             <TextView
                 android:id="@+id/editTextDiagnose"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="50dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginRight="70dp"
                 android:layout_marginBottom="10dp"
                 android:layout_weight="1"
                 android:ems="10"
-                android:text=" "
-                android:background="@drawable/border"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp" />
+                android:text=" " />
 
         </LinearLayout>
 
@@ -354,8 +424,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="@color/ram">
+            android:background="@color/ram"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/editTextNote"
