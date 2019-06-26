@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+
 
 public class DetailsActivity extends AppCompatActivity {
     Intent intent;
@@ -24,14 +26,9 @@ public class DetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.userinfo);
-
-
         DbHandler db = new DbHandler(this);
         ImageView image = findViewById(R.id.photo);
-
-
         Bitmap bitmap = db.getBitmap();
-
 
         if (bitmap != null) image.setImageBitmap(bitmap);
         else Toast.makeText(getBaseContext(), "error loading photo", Toast.LENGTH_SHORT).show();
@@ -44,7 +41,7 @@ public class DetailsActivity extends AppCompatActivity {
         TextView textViewNote = findViewById(R.id.note);
 
 
-        id = db.GetUserID();
+        id = 1;
         name = db.GetUserName();
         lastname = db.GetUserLastname();
         diagnose = db.GetUserDiagnose();
@@ -56,6 +53,7 @@ public class DetailsActivity extends AppCompatActivity {
         textViewLastname.setText(lastname);
         textViewDiagnose.setText(diagnose);
         textViewNote.setText(note);
+
 
         Button back = (Button) findViewById(R.id.backButton);
         back.setOnClickListener(new View.OnClickListener() {

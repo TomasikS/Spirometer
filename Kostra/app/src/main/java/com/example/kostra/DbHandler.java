@@ -3,6 +3,7 @@ package com.example.kostra;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -40,7 +41,7 @@ public class DbHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        // db.execSQL("DROP TABLE UserInformation");
 
         db.execSQL(
                 "create table " + TABLE_Users + "(id INTEGER PRIMARY KEY, firstname TEXT, lastname TEXT, diagnose TEXT, note TEXT,img BLOB) "
@@ -51,11 +52,14 @@ public class DbHandler extends SQLiteOpenHelper {
                 "create table " + TABLE_History + "(id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT, date2 TEXT, volume INTEGER, speed INTEGER ) "
         );
 
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE UserInformation");
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_Users);
+
+
         db.execSQL(
                 "create table " + TABLE_Users + "(id INTEGER PRIMARY KEY, firstname TEXT, lastname TEXT, diagnose TEXT, note TEXT,img BLOB) "
         );
@@ -72,24 +76,52 @@ public class DbHandler extends SQLiteOpenHelper {
     void insertUserDetails(int id, String firstname, String lastname, String diagnose, String note) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String sql = "INSERT INTO UserInformation (id,firstname,lastname, diagnose,note) VALUES (?, ?, ?,?,?)";
-        SQLiteStatement statement = db.compileStatement(sql);
-        statement.bindLong(1, id);
-        statement.bindString(2, firstname);
 
-        statement.bindString(3, lastname);
-        statement.bindString(4, diagnose);
-        statement.bindString(5, note);
-        long rowId = statement.executeInsert();
+        //String sql = "INSERT INTO UserInformation (firstname,lastname, diagnose,note) VALUES ( ?, ?,?,?) WHERE id LIKE 1";
+
+        String sql = "UPDATE UserInformation SET firstname = ? , "
+                + "lastname = ?, "
+                + "diagnose = ?, "
+                + "note = ? "
+                + "WHERE id = ?";
+        SQLiteStatement statement = db.compileStatement(sql);
+
+        statement.bindString(1, firstname);
+
+        statement.bindString(2, lastname);
+        statement.bindString(3, diagnose);
+        statement.bindString(4, note);
+        statement.bindLong(5, id);
+        long rowId = statement.executeUpdateDelete();
+
+
         db.close();
     }
 
 
     public void deleteAll() {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("delete from UserInformation WHERE id >1");
+        List<Integer> listID = this.GetIDList();
+        int count = listID.size();
+
+///        int pom = listID.get(listID.size() - 1);
+
+//        if (count > 1) {
+
+        db.execSQL("DELETE FROM UserInformation WHERE id >1");
+        //      }
+
         db.close();
+
     }
+
+
+//    public long getRecordsCount() {
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        long count = DatabaseUtils.queryNumEntries(db, "UserInformation");
+//        db.close();
+//        return count;
+//    }
 
 
     public int GetUserID() {
@@ -110,7 +142,7 @@ public class DbHandler extends SQLiteOpenHelper {
     public String GetUserName() {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String query = "SELECT  firstname  FROM  UserInformation";
+        String query = "SELECT  firstname  FROM  UserInformation where id like 1";
         Cursor cursor = db.rawQuery(query, null);
         String name = "";
 
@@ -125,7 +157,7 @@ public class DbHandler extends SQLiteOpenHelper {
     public String GetUserLastname() {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String query = "SELECT lastname  FROM  UserInformation";
+        String query = "SELECT lastname  FROM  UserInformation where id like 1";
         Cursor cursor = db.rawQuery(query, null);
         String name = "";
 
@@ -139,7 +171,7 @@ public class DbHandler extends SQLiteOpenHelper {
     public String GetUserDiagnose() {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String query = "SELECT diagnose  FROM  UserInformation";
+        String query = "SELECT diagnose  FROM  UserInformation where id like 1";
         Cursor cursor = db.rawQuery(query, null);
         String name = "";
 
@@ -154,7 +186,7 @@ public class DbHandler extends SQLiteOpenHelper {
     public String GetUserNote() {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String query = "SELECT note  FROM  UserInformation";
+        String query = "SELECT note  FROM  UserInformation where id like 1";
         Cursor cursor = db.rawQuery(query, null);
         String name = "";
 
@@ -170,7 +202,7 @@ public class DbHandler extends SQLiteOpenHelper {
 
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.PNG, 100, out);
+        bm.compress(Bitmap.CompressFormat.PNG, 80, out);
         byte[] buffer = out.toByteArray();
         SQLiteDatabase db = this.getWritableDatabase();
         db.beginTransaction();
@@ -197,7 +229,7 @@ public class DbHandler extends SQLiteOpenHelper {
     }
 
     public Bitmap getBitmap() {
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String qu = "select img  from UserInformation";
 
         Cursor cur = db.rawQuery(qu, null);
@@ -299,9 +331,84 @@ public class DbHandler extends SQLiteOpenHelper {
 
     public void deleteAllMeasurements() {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("delete from History WHERE id >1");
+        db.execSQL("delete from History WHERE id =1");
         db.close();
     }
+
+
+    public List GetIDList() {
+
+        List<Integer> list = new ArrayList();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT  id  FROM UserInformation ";
+        Cursor cursor = db.rawQuery(query, null);
+        int j = 0;
+        while (cursor.moveToNext()) {
+
+            j = (int) cursor.getLong(cursor.getColumnIndex("id"));
+            list.add(j);
+        }
+        return list;
+    }
+
+    public void delete(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.execSQL("delete from  UserInformation where id='" + id + "'");
+        db.close();
+    }
+
+    public int GetSpeed(int id) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT  speed FROM History WHERE id =" + id;
+        Cursor cursor = db.rawQuery(query, null);
+        int j = 0;
+        while (cursor.moveToNext()) {
+
+            j = (int) cursor.getLong(cursor.getColumnIndex("speed"));
+
+        }
+        db.close();
+        return j;
+
+    }
+
+
+    public int GetVolume(int id) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT volume FROM History WHERE id =" + id;
+        Cursor cursor = db.rawQuery(query, null);
+        int j = 0;
+        while (cursor.moveToNext()) {
+
+            j = (int) cursor.getLong(cursor.getColumnIndex("volume"));
+
+        }
+
+        db.close();
+        return j;
+    }
+
+
+    public String GetDate(int id) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT   date  FROM History WHERE id =" + id;
+        Cursor cursor = db.rawQuery(query, null);
+        String j = " ";
+
+        while (cursor.moveToNext()) {
+
+            j = cursor.getString(cursor.getColumnIndex("date"));
+
+
+        }
+
+        return j;
+
+    }
+
 
 }
 

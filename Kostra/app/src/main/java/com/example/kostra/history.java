@@ -1,5 +1,6 @@
 package com.example.kostra;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -78,7 +79,7 @@ public class history extends Fragment {
 
 
             TextView newText = new TextView(getContext());
-            newText.setText("Average speed");
+            newText.setText("Speed");
 
 
             TextView editText = new EditText(getContext());
@@ -119,7 +120,7 @@ public class history extends Fragment {
 
             volume.setText(volumeOfUser.get(i).toString() + "l");
             TextView volume_describe = new TextView(getContext());
-            volume_describe.setText("Average volume");
+            volume_describe.setText("Volume");
 
 
             linearLayout3.addView(volume_describe);
@@ -134,21 +135,36 @@ public class history extends Fragment {
 
             ll.addView(ll2);
 
-            GridLayout gridLayout = new GridLayout(getContext());
+            final GridLayout gridLayout = new GridLayout(getContext());
             gridLayout.setAlignmentMode(GridLayout.ALIGN_BOUNDS);
             gridLayout.setColumnCount(2);
             gridLayout.setRowCount(1);
 
             gridLayout.addView(imageView, 0);
             gridLayout.addView(ll, 1);
+            gridLayout.setId(i + 1);
 
+
+            gridLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    int id = gridLayout.getId();
+                    Measure.setId(id);
+                    //Toast.makeText(getActivity(), String.valueOf(id) + "click", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getActivity(), Measure.class);
+                    startActivity(intent);
+
+                }
+            });
 
             mainLayout.addView(gridLayout);
 
         }
         //
         //    db.deleteAllMeasurements();
-        //SaveMeasurement();
+        /// SaveMeasurement();
 //        Toast.makeText(getContext(), String.valueOf(dates.size()), Toast.LENGTH_SHORT).show();
 //        Toast.makeText(getContext(), dates.get(39), Toast.LENGTH_SHORT).show();
         return view;
@@ -159,6 +175,7 @@ public class history extends Fragment {
         DbHandler db = new DbHandler(getContext());
         db.insertToHistory("26.4.2019", "20:00", 8, 21);
         db.insertToHistory("21.5.2019", "10:00", 8, 225);
+        db.close();
         //Toast.makeText(getContext(), "data saved", Toast.LENGTH_SHORT).show();
     }
 

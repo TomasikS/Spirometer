@@ -5,9 +5,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.LegendRenderer;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
@@ -32,6 +34,11 @@ public class LastMeasure extends Fragment {
 
         final View view = inflater.inflate(R.layout.lastmeasure, container, false);
         GraphView graph = (GraphView) view.findViewById(R.id.graph2);
+
+
+        graph.getLegendRenderer().setVisible(true);
+        graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.MIDDLE);
+
 
         DbHandler db = new DbHandler(getContext());
 
@@ -66,6 +73,14 @@ public class LastMeasure extends Fragment {
         graph.addSeries(series_volume);
         series_speed.setColor(R.color.colorPrimaryDark);
         graph.addSeries(series_speed);
+
+
+        TextView speedText = view.findViewById(R.id.speed);
+        TextView volumeText = view.findViewById(R.id.volume);
+
+        speedText.setText(speed.get(speed.size() - 1).toString() + "km/h");
+        volumeText.setText(volume.get(volume.size() - 1).toString() + "l");
+
 
         return view;
 

@@ -1,6 +1,7 @@
 package com.example.kostra;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -18,6 +19,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.Toolbar;
@@ -40,6 +42,8 @@ import android.widget.Toast;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.example.kostra.R.color.ram;
 
@@ -50,6 +54,11 @@ public class Settings extends AppCompatActivity {
     private int PICK_IMAGE_REQUEST = 1;
 
     Boolean IsBitmap = false;
+    boolean clicked = false;
+    boolean clickedname = false;
+    boolean clickedsurname = false;
+    boolean clickeddiagnose = false;
+    boolean clickednote = false;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -63,23 +72,6 @@ public class Settings extends AppCompatActivity {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
 
                 photo.setImageBitmap(bitmap);
-
-//
-
-//                DbHandler dbHandler = new DbHandler(Settings.this);
-//
-//                photo.invalidate();
-//                BitmapDrawable drawable = (BitmapDrawable) photo.getDrawable();
-//
-//
-//                dbHandler.insertBitmap(drawable.getBitmap());
-//                Toast.makeText(getBaseContext(), "bitmap saved", Toast.LENGTH_SHORT).show();
-//
-//
-//                Intent intentDetail = new Intent(Settings.this, DetailsActivity.class);
-//                startActivity(intentDetail);
-
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -103,8 +95,7 @@ public class Settings extends AppCompatActivity {
         final LinearLayout llinsert = lll.findViewById(R.id.dynamic);
         final LinearLayout llinsert1 = lll.findViewById(R.id.dynamic0);
         final LinearLayout llinsert2 = lll.findViewById(R.id.dynamic3);
-        final TextView textViewNote = findViewById(R.id.editTextNote);
-        final TextView textViewDiagnose = findViewById(R.id.editTextDiagnose);
+
         final LinearLayout llinsert4 = lll.findViewById(R.id.dynamic4);
         final LinearLayout llinsert5 = lll.findViewById(R.id.dynamic5);
         final LinearLayout container = llm.findViewById(R.id.toolbarcontainer);
@@ -119,16 +110,47 @@ public class Settings extends AppCompatActivity {
 
         container.addView(toolbar);
 
-        dbHandler.deleteAll();
-
         int id = dbHandler.GetUserID();
         String firstname = dbHandler.GetUserName();
         String lastname = dbHandler.GetUserLastname();
         String diagnose = dbHandler.GetUserDiagnose();
         String note = dbHandler.GetUserNote();
+        List<Integer> listID = dbHandler.GetIDList();
 
 
-        Toast.makeText(getBaseContext(), firstname, Toast.LENGTH_SHORT).show();
+        final TextView textView = findViewById(R.id.textID);
+        final TextView textViewLName = findViewById(R.id.editTextLName);
+        final TextView meno = findViewById(R.id.textIDFirstname);
+        final TextView textViewNote = findViewById(R.id.editTextNote);
+        final TextView textViewDiagnose = findViewById(R.id.editTextDiagnose);
+
+
+        textView.setText(String.valueOf(id));
+        meno.setText(firstname);
+        textViewLName.setText(lastname);
+        textViewDiagnose.setText(diagnose);
+        textViewNote.setText(note);
+
+
+        // Toast.makeText(getBaseContext(), textView.getText(), Toast.LENGTH_SHORT).show();
+//        if ((firstname == null) || (lastname == null) || (diagnose == null)) {
+//            dbHandler.deleteAll();
+
+//        for (int i = 0; i < listID.size() - 1; i++) {
+//            dbHandler.delete(listID.get(i));
+//            Toast.makeText(getBaseContext(), String.valueOf(listID.get(i) + "item"), Toast.LENGTH_SHORT).show();
+//        }
+
+
+        // int count = listID.size();
+//
+
+        dbHandler.deleteAll();
+//        count = listID.size();
+//
+        // Toast.makeText(getBaseContext(), String.valueOf(count + "velkost"), Toast.LENGTH_SHORT).show();
+
+//        // }
 
 
         photo.setOnClickListener(new View.OnClickListener() {
@@ -159,61 +181,57 @@ public class Settings extends AppCompatActivity {
         });
 
 
-        final TextView IDDescribe = findViewById(R.id.textView);
-        final TextView textView = findViewById(R.id.textID);
+        // final TextView IDDescribe = findViewById(R.id.textView);
 
 
-        ShapeDrawable sd2 = new ShapeDrawable();
-        sd2.getPaint().setColor(Color.RED);
-        sd2.getPaint().setStrokeWidth(10f);
-        sd2.setShape(new RectShape());
-        sd2.getPaint().setStyle(Paint.Style.STROKE);
-        textView.setBackground(sd2);
+        ShapeDrawable sd = new ShapeDrawable();
+        int color = ContextCompat.getColor(getBaseContext(), R.color.colorPrimary);
+        sd.getPaint().setColor(color);
+        sd.getPaint().setStrokeWidth(10f);
+        sd.setShape(new RectShape());
+        sd.getPaint().setStyle(Paint.Style.STROKE);
+
+        textView.setBackground(sd);
 
 
-        textView.setOnClickListener(new View.OnClickListener() {
-
-
-            @Override
-            public void onClick(View v) {
-
-                if (textView.getText().length() > 0)
-                    textView.setVisibility(View.GONE);
-                view = inflater.inflate(R.layout.search, null);
-                EditText searchBox = (EditText) view.findViewById(R.id.textid);
-                searchBox.setBackgroundResource(ram);
-                llinsert.removeView(textView);
-                llinsert.addView(searchBox);
-                searchBox.setTag(1);
-
-                textView.setBackground(null);
-                textView.setText("ID");
-
-                // searchBox.setText(textView.getText());
-
-//                if (textView.getText().length() > 0) {
-//                    textView.setText(textView.getText());
-//                    searchBox.setText(searchBox.getText());
+//        textView.setOnClickListener(new View.OnClickListener() {
 //
-//                }
-                // Toast.makeText(getBaseContext(), searchBox.getText(), Toast.LENGTH_SHORT).show();
+//
+//            @Override
+//            public void onClick(View v) {
+//
+//                if (textView.getText().length() > 0)
+//                    textView.setVisibility(View.GONE);
+//                view = inflater.inflate(R.layout.search, null);
+//                EditText searchBox = (EditText) view.findViewById(R.id.textid);
+//                searchBox.setBackgroundResource(ram);
+//                llinsert.removeView(textView);
+//                llinsert.addView(searchBox);
+//                searchBox.setTag(1);
+//
+//                textView.setBackground(null);
+//                textView.setText("ID");
+//                clicked = true;
+//
+//                // searchBox.setText(textView.getText());
+//
+////                if (textView.getText().length() > 0) {
+////                    textView.setText(textView.getText());
+////                    searchBox.setText(searchBox.getText());
+////
+////                }
+//
+//            }
+//        });
 
-            }
-        });
 
+        textView.setText("1");
+
+        //    Toast.makeText(getBaseContext(), String.valueOf(clicked), Toast.LENGTH_SHORT).show();
 
         final TextView menoDescribe = findViewById(R.id.textViewMeno);
 
         menoDescribe.setVisibility(View.VISIBLE);
-
-
-        final TextView meno = findViewById(R.id.textIDFirstname);
-
-        ShapeDrawable sd = new ShapeDrawable();
-        sd.getPaint().setColor(Color.RED);
-        sd.getPaint().setStrokeWidth(10f);
-        sd.setShape(new RectShape());
-        sd.getPaint().setStyle(Paint.Style.STROKE);
 
 
         meno.setBackground(sd);
@@ -238,11 +256,12 @@ public class Settings extends AppCompatActivity {
 
                 meno.setBackground(null);
                 menoDescribe.setText("Firstname");
+                clickedname = true;
             }
         });
 
-        final TextView textViewLName = findViewById(R.id.editTextLName);
 
+        textViewLName.setBackground(sd);
 
         textViewLName.setOnClickListener(new View.OnClickListener() {
 
@@ -256,12 +275,15 @@ public class Settings extends AppCompatActivity {
                 view = inflater.inflate(R.layout.lastname, null);
                 EditText searchBox = (EditText) view.findViewById(R.id.textlastname);
                 searchBox.setBackgroundResource(ram);
+                llinsert2.removeView(textViewLName);
                 llinsert2.addView(searchBox);
                 searchBox.setTag(3);
-
+                clickedsurname = true;
             }
         });
 
+
+        textViewDiagnose.setBackground(sd);
 
         textViewDiagnose.setOnClickListener(new View.OnClickListener() {
 
@@ -275,8 +297,10 @@ public class Settings extends AppCompatActivity {
                 view = inflater.inflate(R.layout.diagnose, null);
                 EditText searchBox = (EditText) view.findViewById(R.id.textdiagnose);
                 searchBox.setBackgroundResource(ram);
+                llinsert4.removeView(textViewDiagnose);
                 llinsert4.addView(searchBox);
                 searchBox.setTag(4);
+                clickeddiagnose = true;
 
             }
         });
@@ -298,16 +322,12 @@ public class Settings extends AppCompatActivity {
                 searchBox.setVerticalScrollBarEnabled(true);
                 searchBox.setMaxLines(5);
                 llinsert5.addView(searchBox);
+                searchBox.setBackgroundResource(ram);
                 searchBox.setTag(5);
+                clickednote = true;
                 if (textViewNote.getText().length() > 0) searchBox.setText(" ");
             }
         });
-
-        textView.setText(String.valueOf(id));
-        meno.setText(firstname);
-        textViewLName.setText(lastname);
-        textViewDiagnose.setText(diagnose);
-        textViewNote.setText(note);
 
 
         AppCompatImageView view = findViewById(R.id.change);
@@ -323,38 +343,34 @@ public class Settings extends AppCompatActivity {
                 EditText etDiagnose = (EditText) llinsert4.findViewWithTag(4);
 
 
-                textView.setText(" ");
-                meno.setText(" ");
-                textViewLName.setText(" ");
-                textViewDiagnose.setText(" ");
-                textViewNote.setText(" ");
+//                textView.setText(" ");
+//                meno.setText(" ");
+//                textViewLName.setText(" ");
+//                textViewDiagnose.setText(" ");
+//                textViewNote.setText(" ");
 
 
-                if (llinsert.findViewWithTag(1) != null) {
-                    etID.setText(etID.getText());
-                    textView.setText("    ");
-
-                }
+//                if (llinsert.findViewWithTag(1) != null) {
+//                    etID.setText(etID.getText());
+//                    //  textView.setText("    ");
+//
+//                }
 
 
                 if (llinsert1.findViewWithTag(2) != null) {
                     etFirstname.setText(etFirstname.getText());
-                    meno.setText("      ");
+                    //    meno.setText("      ");
 
                 }
                 if (llinsert2.findViewWithTag(3) != null) {
                     etLastname.setText(etLastname.getText());
-                    textViewLName.setText("     ");
+                    //     textViewLName.setText("     ");
                 }
                 if (llinsert4.findViewWithTag(4) != null) {
                     etDiagnose.setText(etDiagnose.getText());
-                    textViewDiagnose.setText("      ");
+                    //    textViewDiagnose.setText("      ");
                 }
-//
-//
 
-//
-//
                 if (textViewNote.getText().toString().length() < 2) {
 
                     textViewNote.setVisibility(View.GONE);
@@ -367,7 +383,7 @@ public class Settings extends AppCompatActivity {
                     searchBox.setMaxLines(5);
                     llinsert5.addView(searchBox);
                     searchBox.setTag(5);
-                    searchBox.setText(" ");
+                    //  searchBox.setText(" ");
                     ///    Toast.makeText(getBaseContext(), searchBox.getText(), Toast.LENGTH_SHORT).show();
                 }
 
@@ -383,109 +399,102 @@ public class Settings extends AppCompatActivity {
                 }
 
 
-                if (textView.getText().toString().length() == 1) {
-                    Toast.makeText(getApplicationContext(), "Wrong input ID", Toast.LENGTH_SHORT).show();
-
+                if ((IsBitmap == false)) {
+//
+//
+                    Toast.makeText(getApplicationContext(), "empty image ", Toast.LENGTH_SHORT).show();
                 }
 
 
-                if (meno.getText().toString().length() == 1) {
-                    Toast.makeText(getApplicationContext(), "Wrong input name", Toast.LENGTH_SHORT).show();
-
-                }
-
-                if (textViewLName.getText().toString().length() == 1) {
-                    Toast.makeText(getApplicationContext(), "Wrong input lastname", Toast.LENGTH_SHORT).show();
-
-                }
-
-
-                if (textViewDiagnose.getText().toString().length() == 1) {
-                    Toast.makeText(getApplicationContext(), "Wrong input diagnose", Toast.LENGTH_SHORT).show();
-
-
-                    if ((IsBitmap == false)) {
-//
 //
 
-                        Toast.makeText(getApplicationContext(), "empty image ", Toast.LENGTH_SHORT).show();
-                    }
+
+                if ((IsBitmap == true) && (clickedname == true) && (clickedsurname == true) && (clickeddiagnose == true)) {
 
 
-                } else if (((etID.getText().length() > 0) &&
-                        (etFirstname.getText().length() > 1) &&
-                        (etLastname.getText().length() > 1) &&
-                        (etDiagnose.getText().length() > 1) &&
-                        (CheckString(etID.getText().toString())) &&
-                        (isString(etFirstname.getText().toString())) &&
-                        (isString(etLastname.getText().toString())) &&
-                        (isString(etDiagnose.getText().toString())) &&
-                        (etNote.getText().length() > -1) &&
-                        (IsBitmap == true))) {
+//                    (((etID.getText().length() > 0) &&
+                    if (((etFirstname.getText().length() > 1) &&
+                            (etLastname.getText().length() > 1) &&
+                            (etDiagnose.getText().length() > 1) &&
+//                            (isNumeric(etID.getText().toString())) &&
+                            (isString(etFirstname.getText().toString())) &&
+                            (isString(etLastname.getText().toString())) &&
+                            (isString(etDiagnose.getText().toString())))) {
+                        List<LastValue> meranie = new ArrayList<>();
 
 
-                    Toast.makeText(getBaseContext(), "Saving to db", Toast.LENGTH_SHORT).show();
-
-
-//                    final ImageView photo = findViewById(R.id.imageView);
-//                    photo.invalidate();
-//                    BitmapDrawable drawable = (BitmapDrawable) photo.getDrawable();
+//                        String pom_ID = etID.getText().toString();
+//                        String ID_NEW = pom_ID.replace(" ", "");
 //
-//                    DbHandler dbHandler = new DbHandler(Settings.this);
-//                    dbHandler.insertBitmap(drawable.getBitmap());
+//                        int ID = Integer.parseInt(ID_NEW);
+
+                        meranie.add(new LastValue(1, etFirstname.getText().toString(), etLastname.getText().toString(), etDiagnose.getText().toString(), etNote.getText().toString()));
+
+                        //      Toast.makeText(getBaseContext(), "Saving to db", Toast.LENGTH_SHORT).show();
 
 
-                    DbHandler dbHandler = new DbHandler(Settings.this);
-
-                    Toast.makeText(getBaseContext(), "data deleted", Toast.LENGTH_SHORT).show();
+                        ///   Toast.makeText(getBaseContext(), "bitmap saved", Toast.LENGTH_SHORT).show();
 
 
-                    Toast.makeText(getBaseContext(), "bitmap saved", Toast.LENGTH_SHORT).show();
+                        //   Toast.makeText(getBaseContext(), String.valueOf(ID), Toast.LENGTH_SHORT).show();
 
 
-                    String pom_ID = etID.getText().toString();
-                    String ID_NEW = pom_ID.replace(" ", "");
+                        String firstname = etFirstname.getText().toString();
+                        String lastname = etLastname.getText().toString();
+                        String diagnose = etDiagnose.getText().toString();
+                        String note = "";
 
-                    int ID = Integer.parseInt(ID_NEW);
+                        if (clickednote == true) note = etNote.getText().toString();
 
 
-                    String firstname = etFirstname.getText().toString();
-                    String lastname = etLastname.getText().toString();
-                    String diagnose = etDiagnose.getText().toString();
-                    String note = etNote.getText().toString();
+//                        String note = etNote.getText().toString();
 
 //                    Toast.makeText(getBaseContext(), firstname, Toast.LENGTH_SHORT).show();
 //                    Toast.makeText(getBaseContext(), lastname, Toast.LENGTH_SHORT).show();
 
-                    // Toast.makeText(getBaseContext(), String.valueOf(ID_NEW), Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(getBaseContext(), String.valueOf(ID_NEW), Toast.LENGTH_SHORT).show();
 //                    Toast.makeText(getBaseContext(), diagnose, Toast.LENGTH_SHORT).show();
 //                    Toast.makeText(getBaseContext(), note, Toast.LENGTH_SHORT).show();
 
-                    //
-                    //dbHandler.insertUserDetails(ID, firstname, lastname, diagnose, note);
+                        //
+                        //dbHandler.insertUserDetails(ID, firstname, lastname, diagnose, note);
 //                    Intent intent = new Intent(Settings.this, DetailsActivity.class);
 //                    startActivity(intent);
 
 
-                    SaveBitmap();
-                    SaveData(ID, firstname, lastname, diagnose, note);
-                    //Toast.makeText(getApplicationContext(), "Details deleted Successfully", Toast.LENGTH_SHORT).show();
-                    //    dbHandler.insertUserDetails(ID, firstname, lastname, diagnose, note);
+                        SaveBitmap();
+                        SaveData(1, firstname, lastname, diagnose, note);
+                        //Toast.makeText(getApplicationContext(), "Details deleted Successfully", Toast.LENGTH_SHORT).show();
+                        //    dbHandler.insertUserDetails(ID, firstname, lastname, diagnose, note);
 
 
-                    Intent intent = new Intent(Settings.this, DetailsActivity.class);
-                    startActivity(intent);
+                        Intent intent = new Intent(Settings.this, DetailsActivity.class);
+                        startActivity(intent);
 
-                    //Toast.makeText(getApplicationContext(), "Details Inserted Successfully", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "Details Inserted Successfully", Toast.LENGTH_SHORT).show();
+                        // textView.setText(String.valueOf(id));
+                        meno.setText(firstname);
+                        textViewLName.setText(lastname);
+                        textViewDiagnose.setText(diagnose);
+                        textViewNote.setText(note);
+
+
+                    } else {
+
+
+                        Toast.makeText(getApplicationContext(), "wrong input", Toast.LENGTH_SHORT).show();
+
+                    }
 
 
                 } else {
 
-                    Toast.makeText(getApplicationContext(), "error value", Toast.LENGTH_SHORT).show();
+
+                    Toast.makeText(getApplicationContext(), "wrong / empty input", Toast.LENGTH_SHORT).show();
 
                 }
 
-            }
+            } // click listener
 
         });
 
@@ -500,7 +509,7 @@ public class Settings extends AppCompatActivity {
         DbHandler dbHandler = new DbHandler(Settings.this);
         dbHandler.insertBitmap(drawable.getBitmap());
         Toast.makeText(getBaseContext(), "bitmap saved", Toast.LENGTH_SHORT).show();
-
+        dbHandler.close();
 
     }
 
@@ -512,18 +521,19 @@ public class Settings extends AppCompatActivity {
         Intent intent = new Intent(Settings.this, DetailsActivity.class);
         startActivity(intent);
         Toast.makeText(getApplicationContext(), "Details Inserted Successfully", Toast.LENGTH_SHORT).show();
-
+        dbHandler.close();
 
     }
 
-
-    public static boolean CheckString(String str) {
-        for (char c : str.toCharArray()) {
-            if (!Character.isDigit(c))
-                return false;
-        }
-        return true;
-    }
+//
+//    public static boolean isNumeric(String str) {
+//        if (str == null)
+//            return false;
+//        for (char c : str.toCharArray())
+//            if (c < '0' || c > '9')
+//                return false;
+//        return true;
+//    }
 
 
     boolean isString(String str) {
